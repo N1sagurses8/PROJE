@@ -1,207 +1,317 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>RED BULL LILAC EDITION</title>
-<style>
-:root{
-  --bg:#0b0b0f; --card:#141420; --border:#24243a; --txt:#f5f5ff; --muted:#b9b9d6;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial;color:var(--txt);
-  background:radial-gradient(1200px 600px at 20% -10%, #3b1d6b 0%, var(--bg) 45%);}
-.wrap{max-width:900px;margin:auto;padding:24px}
-.card{background:linear-gradient(180deg,#17172a,var(--card));border:1px solid var(--border);
-  border-radius:20px;padding:22px;box-shadow:0 12px 45px rgba(0,0,0,.35);}
-.sep{height:1px;background:linear-gradient(90deg,transparent,#2c2c52,transparent);margin:22px 0}
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>RED BULL LILAC EDITION</title>
 
-.videoWrap{width:100%;max-width:1920px;aspect-ratio:16/9;overflow:hidden;border-radius:18px;
-  border:1px solid var(--border);background:#0f0f18;margin:0 auto 18px;}
-.videoWrap video{width:100%;height:100%;object-fit:cover;display:block}
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#141420;
+      --border:#24243a;
+      --txt:#f5f5ff;
+      --muted:#b9b9d6;
+      --accent:#a855f7;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Arial;
+      color:var(--txt);
+      background:radial-gradient(1200px 600px at 20% -10%, #3b1d6b 0%, var(--bg) 45%);
+    }
+    .wrap{max-width:900px;margin:auto;padding:24px}
+    .card{
+      background:linear-gradient(180deg,#17172a,var(--card));
+      border:1px solid var(--border);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 12px 45px rgba(0,0,0,.35);
+      position:relative;
+      z-index:1; /* enerji yağmuru arkada kalsın */
+    }
+    .sep{
+      height:1px;
+      background:linear-gradient(90deg,transparent,#2c2c52,transparent);
+      margin:22px 0
+    }
 
-.small{font-size:12px;color:var(--muted)}
-.badge{display:inline-flex;gap:8px;align-items:center;color:#ffd1ff}
-.tag{display:inline-block;padding:6px 12px;border-radius:999px;background:#23234a;border:1px solid #2d2d57}
+    /* VIDEO 16:9 (1920x1080 oran) */
+    .videoWrap{
+      width:100%;
+      max-width:1920px;
+      aspect-ratio:16/9;
+      overflow:hidden;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:#0f0f18;
+      margin:0 auto 18px;
+    }
+    .videoWrap video{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
 
-h2{margin:0 0 10px}
-input,textarea,button{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--border);
-  background:#0f0f18;color:var(--txt);outline:none}
-textarea{min-height:110px;resize:vertical}
-button{cursor:pointer;border:none;font-weight:900;background:linear-gradient(180deg,#b26bff,#7c3aed)}
-button:disabled{opacity:.6;cursor:not-allowed}
-.grid{display:grid;gap:12px}
+    .small{font-size:12px;color:var(--muted)}
+    .badge{display:inline-flex;gap:8px;align-items:center;color:#ffd1ff}
+    .tag{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      background:#23234a;
+      border:1px solid #2d2d57
+    }
 
-.item{background:#0f0f18;border:1px solid var(--border);border-radius:14px;padding:14px}
-.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.time{font-size:12px;color:var(--muted);white-space:nowrap}
-.content{margin-top:8px;line-height:1.35}
-.err{color:#ffb4b4}
-.ok{color:#b9ffcf}
-</style>
+    .list{margin:14px 0 0;padding-left:18px}
+    .list li{margin:6px 0}
+
+    h2{margin:0 0 10px}
+    input,textarea,button{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#0f0f18;
+      color:var(--txt);
+      outline:none
+    }
+    textarea{min-height:110px;resize:vertical}
+    button{
+      cursor:pointer;
+      border:none;
+      font-weight:900;
+      background:linear-gradient(180deg,#b26bff,#7c3aed)
+    }
+    button:disabled{opacity:.6;cursor:not-allowed}
+    .grid{display:grid;gap:12px}
+
+    .item{
+      background:#0f0f18;
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px
+    }
+    .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .time{font-size:12px;color:var(--muted);white-space:nowrap}
+    .content{margin-top:8px;line-height:1.35}
+    .err{color:#ffb4b4}
+    .ok{color:#b9ffcf}
+
+    /* ⚡ ENERGY RAIN */
+    #energy-rain{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
+    }
+    .energy{
+      position:absolute;
+      top:-40px;
+      font-size:16px;
+      opacity:.5;
+      animation: fall linear infinite;
+      filter: drop-shadow(0 0 6px rgba(168,85,247,.6));
+    }
+    @keyframes fall{
+      from{ transform:translateY(0); }
+      to{ transform:translateY(110vh); }
+    }
+  </style>
 </head>
 
 <body>
-<div class="wrap">
+  <!-- enerji yağmuru katmanı -->
+  <div id="energy-rain"></div>
 
-  <div class="card">
-    <div class="videoWrap">
-      <video autoplay muted loop playsinline preload="metadata">
-        <source src="video.mp4" type="video/mp4">
-      </video>
-    </div>
+  <div class="wrap">
 
-    <div class="badge">💜 <b>RED BULL LILAC EDITION</b></div>
-    <p class="small">Mor modu aç.</p>
-    <p><b>LILAC EDITION</b> = Enerji ama cool.</p>
-    <p class="small">Klasik enerjiyi çiçeksi lilac aromasıyla upgrade eder.</p>
-
-    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <span class="tag">slug: <b id="slugTag"></b></span>
-      <span class="small">build: <b id="buildId"></b></span>
-      <span class="small">API: <b id="apiState">kontrol…</b></span>
-    </div>
-  </div>
-
-  <div class="sep"></div>
-
-  <div class="card">
-    <h2>💬 Yorumlar</h2>
-    <div class="grid">
-      <input id="name" placeholder="İsminiz (opsiyonel)"/>
-      <textarea id="content" placeholder="Yorumunuzu yazın…"></textarea>
-      <button id="sendBtn">Yorumu Gönder</button>
-      <div id="status" class="small"></div>
-    </div>
-  </div>
-
-  <div style="height:14px"></div>
-
-  <div class="card">
-    <div id="list" class="grid"></div>
-  </div>
-
-</div>
-
-<script>
-/* 1) URL + ANON KEY */
-const SUPABASE_URL = "https://hbezsauafsawefmlwazb.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiZXpzYXVhZnNhd2VmbWx3YXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTY0MDksImV4cCI6MjA4NTYzMjQwOX0.zLsUcFThJZdTLFNkslVYz4_S40lEjm4aOi_-2g9T4us";
-
-/* 2) BUILD ID (yayında mı kontrol için) */
-const BUILD_ID = "2026-02-04-AAA";
-document.getElementById("buildId").textContent = BUILD_ID;
-
-/* 3) SLUG */
-const params = new URLSearchParams(location.search);
-const slug = params.get("slug") || "red-bull-lilac-edition";
-document.getElementById("slugTag").textContent = slug;
-
-const listEl = document.getElementById("list");
-const statusEl = document.getElementById("status");
-const apiStateEl = document.getElementById("apiState");
-const sendBtn = document.getElementById("sendBtn");
-
-function esc(s){
-  return (s ?? "").toString().replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[m]));
-}
-function fmtTime(iso){
-  try{ return new Date(iso).toLocaleString("tr-TR",{dateStyle:"short",timeStyle:"short"}); }
-  catch{ return ""; }
-}
-
-/* 4) HEADERS */
-const headers = {
-  "Content-Type": "application/json",
-  "apikey": SUPABASE_ANON_KEY,
-  "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-  "Cache-Control": "no-cache",
-  "Pragma": "no-cache"
-};
-
-function setApiOk(){ apiStateEl.className="ok"; apiStateEl.textContent="ok"; }
-function setApiBad(msg){ apiStateEl.className="err"; apiStateEl.textContent=msg; }
-
-async function loadComments(){
-  listEl.innerHTML = `<div class="small">Yükleniyor…</div>`;
-
-  // ❗ nocache parametresi KALDIRILDI (400 fix)
-  const url =
-    `${SUPABASE_URL}/rest/v1/comments` +
-    `?select=id,name,content,created_at` +
-    `&slug=eq.${encodeURIComponent(slug)}` +
-    `&order=created_at.desc` +
-    `&limit=50`;
-
-  const res = await fetch(url, { headers });
-  const text = await res.text().catch(()=> "");
-
-  if(!res.ok){
-    setApiBad(String(res.status));
-    listEl.innerHTML = `<div class="small err">❌ Liste hata (${res.status}): ${esc(text.slice(0,220))}</div>`;
-    return;
-  }
-
-  setApiOk();
-  const data = text ? JSON.parse(text) : [];
-  if(!data.length){
-    listEl.innerHTML = `<div class="small">Henüz yorum yok.</div>`;
-    return;
-  }
-
-  listEl.innerHTML = data.map(x=>`
-    <div class="item">
-      <div class="top">
-        <b>${esc(x.name || "Anonim")}</b>
-        <span class="time">${esc(fmtTime(x.created_at))}</span>
+    <!-- HERO -->
+    <div class="card">
+      <div class="videoWrap">
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="video.mp4" type="video/mp4">
+        </video>
       </div>
-      <div class="content">${esc(x.content)}</div>
+
+      <div class="badge">💜 <b>RED BULL LILAC EDITION</b></div>
+      <p class="small">Mor modu aç.</p>
+
+      <p style="margin:10px 0 0;"><b>LILAC EDITION</b> = Enerji ama cool.</p>
+      <p class="small" style="margin-top:8px;">Klasik enerjiyi çiçeksi lilac aromasıyla upgrade eder.</p>
+
+      <ul class="list">
+        <li>⚡ Daha hafif.</li>
+        <li>🌸 Daha fresh.</li>
+        <li>🎧 Daha ritmik.</li>
+      </ul>
+
+      <p class="small">Evde, oyunda, müzikte, sokakta…</p>
+      <p style="margin:10px 0 0;"><b>Mor hisset. Ritmi aç. Eğlence başlasın 🚀</b></p>
+
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <span class="tag">slug: <b id="slugTag"></b></span>
+        <span class="small">build: <b id="buildId"></b></span>
+        <span class="small">API: <b id="apiState">kontrol…</b></span>
+      </div>
     </div>
-  `).join("");
-}
 
-async function sendComment(){
-  const name = document.getElementById("name").value.trim();
-  const content = document.getElementById("content").value.trim();
+    <div class="sep"></div>
 
-  if(content.length < 2){
-    statusEl.className="small err";
-    statusEl.textContent="Yorum çok kısa.";
-    return;
-  }
+    <!-- COMMENTS FORM -->
+    <div class="card">
+      <h2>💬 Yorumlar</h2>
+      <div class="grid">
+        <input id="name" placeholder="İsminiz (opsiyonel)"/>
+        <textarea id="content" placeholder="Yorumunuzu yazın…"></textarea>
+        <button id="sendBtn">Yorumu Gönder</button>
+        <div id="status" class="small"></div>
+      </div>
+    </div>
 
-  statusEl.className="small";
-  statusEl.textContent="Gönderiliyor…";
-  sendBtn.disabled = true;
+    <div style="height:14px"></div>
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
-    method: "POST",
-    headers: { ...headers, "Prefer": "return=minimal" },
-    body: JSON.stringify({ slug, name: name || null, content })
-  });
+    <!-- COMMENTS LIST -->
+    <div class="card">
+      <div id="list" class="grid"></div>
+    </div>
 
-  const text = await res.text().catch(()=> "");
+  </div>
 
-  if(!res.ok){
-    statusEl.className="small err";
-    statusEl.textContent = `❌ Gönderim hata (${res.status}): ${text.slice(0,220)}`;
-    sendBtn.disabled = false;
-    return;
-  }
+  <script>
+    /* 1) URL + ANON KEY */
+    const SUPABASE_URL = "https://hbezsauafsawefmlwazb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiZXpzYXVhZnNhd2VmbWx3YXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTY0MDksImV4cCI6MjA4NTYzMjQwOX0.zLsUcFThJZdTLFNkslVYz4_S40lEjm4aOi_-2g9T4us";
 
-  statusEl.className="small ok";
-  statusEl.textContent="✅ Gönderildi";
-  sendBtn.disabled = false;
-  document.getElementById("content").value = "";
-  await loadComments();
-}
+    /* 2) BUILD */
+    const BUILD_ID = "2026-02-04-AAA";
+    document.getElementById("buildId").textContent = BUILD_ID;
 
-sendBtn.addEventListener("click", sendComment);
-loadComments();
-</script>
+    /* 3) SLUG */
+    const params = new URLSearchParams(location.search);
+    const slug = params.get("slug") || "red-bull-lilac-edition";
+    document.getElementById("slugTag").textContent = slug;
+
+    const listEl = document.getElementById("list");
+    const statusEl = document.getElementById("status");
+    const apiStateEl = document.getElementById("apiState");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function esc(s){
+      return (s ?? "").toString().replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[m]));
+    }
+    function fmtTime(iso){
+      try{ return new Date(iso).toLocaleString("tr-TR",{dateStyle:"short",timeStyle:"short"}); }
+      catch{ return ""; }
+    }
+
+    /* 4) HEADERS */
+    const headers = {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+      "Cache-Control": "no-cache",
+      "Pragma": "no-cache"
+    };
+
+    function setApiOk(){ apiStateEl.className="ok"; apiStateEl.textContent="ok"; }
+    function setApiBad(msg){ apiStateEl.className="err"; apiStateEl.textContent=msg; }
+
+    async function loadComments(){
+      listEl.innerHTML = `<div class="small">Yükleniyor…</div>`;
+
+      const url =
+        `${SUPABASE_URL}/rest/v1/comments` +
+        `?select=id,name,content,created_at` +
+        `&slug=eq.${encodeURIComponent(slug)}` +
+        `&order=created_at.desc` +
+        `&limit=50`;
+
+      const res = await fetch(url, { headers });
+      const text = await res.text().catch(()=> "");
+
+      if(!res.ok){
+        setApiBad(String(res.status));
+        listEl.innerHTML = `<div class="small err">❌ Liste hata (${res.status}): ${esc(text.slice(0,220))}</div>`;
+        return;
+      }
+
+      setApiOk();
+      const data = text ? JSON.parse(text) : [];
+      if(!data.length){
+        listEl.innerHTML = `<div class="small">Henüz yorum yok.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = data.map(x=>`
+        <div class="item">
+          <div class="top">
+            <b>${esc(x.name || "Anonim")}</b>
+            <span class="time">${esc(fmtTime(x.created_at))}</span>
+          </div>
+          <div class="content">${esc(x.content)}</div>
+        </div>
+      `).join("");
+    }
+
+    async function sendComment(){
+      const name = document.getElementById("name").value.trim();
+      const content = document.getElementById("content").value.trim();
+
+      if(content.length < 2){
+        statusEl.className="small err";
+        statusEl.textContent="Yorum çok kısa.";
+        return;
+      }
+
+      statusEl.className="small";
+      statusEl.textContent="Gönderiliyor…";
+      sendBtn.disabled = true;
+
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/comments`, {
+        method: "POST",
+        headers: { ...headers, "Prefer": "return=minimal" },
+        body: JSON.stringify({ slug, name: name || null, content })
+      });
+
+      const text = await res.text().catch(()=> "");
+
+      if(!res.ok){
+        statusEl.className="small err";
+        statusEl.textContent = `❌ Gönderim hata (${res.status}): ${text.slice(0,220)}`;
+        sendBtn.disabled = false;
+        return;
+      }
+
+      statusEl.className="small ok";
+      statusEl.textContent="✅ Gönderildi";
+      sendBtn.disabled = false;
+      document.getElementById("content").value = "";
+      await loadComments();
+    }
+
+    sendBtn.addEventListener("click", sendComment);
+    loadComments();
+
+    /* ⚡ ENERGY RAIN */
+    const rain = document.getElementById("energy-rain");
+    const icons = ["⚡","💜","✨"];
+    setInterval(()=>{
+      const e = document.createElement("div");
+      e.className = "energy";
+      e.textContent = icons[Math.floor(Math.random()*icons.length)];
+      e.style.left = Math.random()*100 + "vw";
+      e.style.fontSize = (14 + Math.random()*10) + "px";
+      e.style.animationDuration = (7 + Math.random()*6) + "s";
+      rain.appendChild(e);
+      setTimeout(()=>e.remove(), 13000);
+    }, 700);
+  </script>
 </body>
 </html>
-
 
