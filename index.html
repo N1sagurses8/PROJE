@@ -84,15 +84,15 @@ button:disabled{opacity:.6;cursor:not-allowed}
 </div>
 
 <script>
-/* ====== 1) DOĞRU URL + ANON KEY (senin verdiğin) ====== */
+/* 1) URL + ANON KEY */
 const SUPABASE_URL = "https://hbezsauafsawefmlwazb.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiZXpzYXVhZnNhd2VmbWx3YXpiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwNTY0MDksImV4cCI6MjA4NTYzMjQwOX0.zLsUcFThJZdTLFNkslVYz4_S40lEjm4aOi_-2g9T4us";
 
-/* ====== 2) CACHE KONTROL (build id) ====== */
-const BUILD_ID = "2026-02-03-01"; // bunu değiştirince canlı kaynak değişmiş mi anlarsın
+/* 2) BUILD ID (yayında mı kontrol için) */
+const BUILD_ID = "2026-02-03-02";
 document.getElementById("buildId").textContent = BUILD_ID;
 
-/* ====== 3) SLUG ====== */
+/* 3) SLUG */
 const params = new URLSearchParams(location.search);
 const slug = params.get("slug") || "red-bull-lilac-edition";
 document.getElementById("slugTag").textContent = slug;
@@ -112,12 +112,13 @@ function fmtTime(iso){
   catch{ return ""; }
 }
 
-/* ====== 4) HEADERS (401 için sağlam) ====== */
+/* 4) HEADERS */
 const headers = {
   "Content-Type": "application/json",
   "apikey": SUPABASE_ANON_KEY,
   "Authorization": "Bearer " + SUPABASE_ANON_KEY,
-  "x-api-key": SUPABASE_ANON_KEY   // bazı reverse proxy'lerde işe yarar
+  "Cache-Control": "no-cache",
+  "Pragma": "no-cache"
 };
 
 function setApiOk(){ apiStateEl.className="ok"; apiStateEl.textContent="ok"; }
@@ -126,15 +127,13 @@ function setApiBad(msg){ apiStateEl.className="err"; apiStateEl.textContent=msg;
 async function loadComments(){
   listEl.innerHTML = `<div class="small">Yükleniyor…</div>`;
 
-  // cache bypass (bazı CDN’ler için)
-  const nocache = `&nocache=${encodeURIComponent(BUILD_ID)}_${Date.now()}`;
-
+  // ❗ nocache parametresi KALDIRILDI (400 fix)
   const url =
     `${SUPABASE_URL}/rest/v1/comments` +
     `?select=id,name,content,created_at` +
     `&slug=eq.${encodeURIComponent(slug)}` +
     `&order=created_at.desc` +
-    `&limit=50${nocache}`;
+    `&limit=50`;
 
   const res = await fetch(url, { headers });
   const text = await res.text().catch(()=> "");
@@ -204,5 +203,4 @@ loadComments();
 </script>
 </body>
 </html>
-
 
